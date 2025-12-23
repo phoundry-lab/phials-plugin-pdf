@@ -1,6 +1,4 @@
 node_modules/
-main.js
-main.js.map
 dist/
 .DS_Store
 
