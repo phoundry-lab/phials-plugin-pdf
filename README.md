@@ -55,11 +55,14 @@ npm run dev
 ```
 phials-plugin-pdf/
 ├── src/
-│   ├── main.ts      # Plugin entry point
-│   └── types.d.ts   # Type definitions
-├── manifest.json    # Plugin metadata
+│   ├── main.ts           # Plugin entry point
+│   ├── PDFPreview.svelte # Preview component
+│   ├── PDFThumbnail.svelte # Thumbnail component
+│   ├── pdf-utils.ts      # Shared PDF utilities
+│   └── types.d.ts        # Type definitions
+├── manifest.json         # Plugin metadata
 ├── package.json
-├── rollup.config.js # Build configuration
+├── rollup.config.js      # Build configuration
 └── tsconfig.json
 ```
 
@@ -143,13 +146,41 @@ Request only the permissions you need in `manifest.json`:
 
 ### 5. Components
 
-External plugins can't use Svelte directly. Instead, create vanilla JS components:
+External plugins can use **Svelte components** (recommended) or vanilla JS components.
+
+#### Option A: Svelte Components (Recommended)
+
+Plugins can bundle their own Svelte runtime:
+
+```typescript
+// src/MyPreview.svelte
+<script lang="ts">
+  interface Props { file: FileEntry; }
+  let { file }: Props = $props();
+</script>
+
+<div class="preview">{file.name}</div>
+
+// src/main.ts
+import MyPreview from './MyPreview.svelte';
+
+const provider: PreviewProvider = {
+  type: 'preview',
+  id: 'my.preview',
+  name: 'My Preview',
+  extensions: ['xyz'],
+  preview: MyPreview,
+};
+```
+
+#### Option B: Vanilla JS Components
+
+For plugins that don't want to bundle Svelte:
 
 ```typescript
 function createComponent() {
   return {
     create(target: HTMLElement, props: any) {
-      // Create DOM elements
       const el = document.createElement('div');
       target.appendChild(el);
       

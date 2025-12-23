@@ -66,13 +66,6 @@
   onDestroy(() => {
     pdf?.destroy();
   });
-
-  // Reload when file changes
-  $effect(() => {
-    if (file?.path) {
-      loadDocument(file.path);
-    }
-  });
 </script>
 
 <div class="pdf-preview">
