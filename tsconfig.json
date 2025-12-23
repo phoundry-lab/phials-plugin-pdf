@@ -7,11 +7,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
     "declaration": false,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["svelte"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/**/*.svelte"],
   "exclude": ["node_modules"]
 }
 
