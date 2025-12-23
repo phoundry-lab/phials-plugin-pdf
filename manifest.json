@@ -5,8 +5,8 @@
   "minAppVersion": "0.1.0",
   "author": "Phials",
   "description": "Preview and thumbnail support for PDF files using pdf.js",
-  "authorUrl": "https://github.com/phials-dev",
-  "repository": "https://github.com/phials-dev/phials-plugin-pdf",
+  "authorUrl": "https://github.com/EliWimmer",
+  "repository": "https://github.com/EliWimmer/phials-plugin-pdf",
   "icons": ["mdi:file-pdf-box"],
   "permissions": ["filesystem.read"]
 }
