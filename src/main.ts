@@ -22,6 +22,8 @@ const pdfPreviewProvider: PreviewProvider = {
   priority: 100,
   extensions: ['pdf'],
   mimeTypes: ['application/pdf'],
+  surface: PDFPreview,
+  // Deprecated compatibility field for older Phials releases.
   preview: PDFPreview,
   thumbnail: PDFThumbnail,
 };

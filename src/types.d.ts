@@ -92,6 +92,7 @@ declare global {
     mimeTypes?: string[];
     categories?: FileCategory[];
     canHandle?: (file: FileEntry) => boolean;
+    surface?: any; // Responsive preview surface
     preview?: any; // Svelte component
     thumbnail?: any; // Svelte component
     fullscreen?: any; // Component
