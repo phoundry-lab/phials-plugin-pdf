@@ -93,10 +93,33 @@ declare global {
     categories?: FileCategory[];
     canHandle?: (file: FileEntry) => boolean;
     surface?: any; // Responsive preview surface
+    createSession?: (
+      props: PreviewSessionFactoryProps,
+    ) => PreviewSession | Promise<PreviewSession>;
+    toolbar?: any; // Reactive right-aligned toolbar contribution
+    destinations?: { previewTab?: boolean; embed?: boolean };
     preview?: any; // Svelte component
     thumbnail?: any; // Svelte component
     fullscreen?: any; // Component
     overridesDoubleClick?: boolean;
+  }
+
+  type PreviewDestination = 'module' | 'tab' | 'gallery' | 'page' | 'embed';
+
+  interface PreviewSession {
+    editor?: unknown;
+    retainOnRelease?: () => boolean;
+    dispose?: () => void | Promise<void>;
+  }
+
+  interface PreviewSessionFactoryProps {
+    file: FileEntry;
+  }
+
+  interface PreviewToolbarContributionProps {
+    file: FileEntry;
+    session?: PreviewSession;
+    destination: PreviewDestination;
   }
 
   /** Settings schema */

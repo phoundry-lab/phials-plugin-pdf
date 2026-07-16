@@ -2,12 +2,18 @@
   import { onMount, onDestroy } from 'svelte';
   import type { PDFDocumentProxy } from 'pdfjs-dist';
   import { loadPDF, renderPageToCanvas } from './pdf-utils';
+  import { PDFPreviewSession } from './PDFPreviewSession.svelte';
 
   interface Props {
     file: FileEntry;
+    session?: PreviewSession;
   }
 
-  let { file }: Props = $props();
+  let { file, session }: Props = $props();
+  const fallbackSession = new PDFPreviewSession();
+  const preview = $derived(
+    (session as PDFPreviewSession | undefined) ?? fallbackSession
+  );
 
   let canvas: HTMLCanvasElement;
   let pdf: PDFDocumentProxy | null = null;
@@ -16,14 +22,11 @@
   let isLoading = $state(true);
   let error = $state<string | null>(null);
 
-  const pageInfo = $derived(
-    isLoading ? 'Loading...' : error ? error : `Page ${currentPage} of ${totalPages}`
-  );
-
   async function loadDocument(path: string) {
     isLoading = true;
     error = null;
     currentPage = 1;
+    syncSession();
     
     try {
       if (pdf) {
@@ -31,12 +34,15 @@
       }
       pdf = await loadPDF(path);
       totalPages = pdf.numPages;
+      syncSession();
       await renderCurrentPage();
     } catch (e) {
       error = 'Failed to load PDF';
+      syncSession();
       console.error('PDF load error:', e);
     } finally {
       isLoading = false;
+      syncSession();
     }
   }
 
@@ -48,6 +54,7 @@
   function prevPage() {
     if (currentPage > 1) {
       currentPage--;
+      syncSession();
       renderCurrentPage();
     }
   }
@@ -55,26 +62,30 @@
   function nextPage() {
     if (currentPage < totalPages) {
       currentPage++;
+      syncSession();
       renderCurrentPage();
     }
   }
 
   onMount(() => {
+    const unbind = preview.bindControls(prevPage, nextPage);
     loadDocument(file.path);
+    return unbind;
   });
 
   onDestroy(() => {
     pdf?.destroy();
   });
+
+  function syncSession() {
+    preview.currentPage = currentPage;
+    preview.totalPages = totalPages;
+    preview.isLoading = isLoading;
+    preview.error = error;
+  }
 </script>
 
 <div class="pdf-preview">
-  <div class="header">
-    <button onclick={prevPage} disabled={currentPage <= 1 || isLoading}>←</button>
-    <span>{pageInfo}</span>
-    <button onclick={nextPage} disabled={currentPage >= totalPages || isLoading}>→</button>
-  </div>
-  
   <div class="canvas-container">
     <canvas bind:this={canvas}></canvas>
   </div>
@@ -88,36 +99,6 @@
     flex-direction: column;
     background: var(--surface-sunken, #0a0a0a);
     overflow: hidden;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 8px;
-    background: var(--surface-raised, #262626);
-    border-bottom: 1px solid var(--border-muted, #333);
-    font-size: 13px;
-    color: var(--text-secondary, #a3a3a3);
-  }
-
-  .header button {
-    padding: 4px 12px;
-    background: var(--surface-overlay, #404040);
-    border: none;
-    border-radius: 4px;
-    color: var(--text-primary, #e5e5e5);
-    cursor: pointer;
-  }
-
-  .header button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .header button:hover:not(:disabled) {
-    background: var(--surface-raised, #525252);
   }
 
   .canvas-container {

@@ -9,6 +9,8 @@
 import { setPluginAPI } from './pdf-utils';
 import PDFPreview from './PDFPreview.svelte';
 import PDFThumbnail from './PDFThumbnail.svelte';
+import PDFToolbar from './PDFToolbar.svelte';
+import { PDFPreviewSession } from './PDFPreviewSession.svelte';
 
 // ─── Plugin Definition ────────────────────────────────────────────────────────
 
@@ -23,8 +25,9 @@ const pdfPreviewProvider: PreviewProvider = {
   extensions: ['pdf'],
   mimeTypes: ['application/pdf'],
   surface: PDFPreview,
-  // Deprecated compatibility field for older Phials releases.
-  preview: PDFPreview,
+  createSession: () => new PDFPreviewSession(),
+  toolbar: PDFToolbar,
+  destinations: { previewTab: true, embed: true },
   thumbnail: PDFThumbnail,
 };
 
