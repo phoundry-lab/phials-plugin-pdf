@@ -27,7 +27,7 @@ const pdfPreviewProvider: PreviewProvider = {
   surface: PDFPreview,
   createSession: () => new PDFPreviewSession(),
   toolbar: PDFToolbar,
-  destinations: { previewTab: true, embed: true },
+  destinations: { pageTab: true, embed: true },
   thumbnail: PDFThumbnail,
 };
 

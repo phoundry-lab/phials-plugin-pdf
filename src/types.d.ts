@@ -97,14 +97,12 @@ declare global {
       props: PreviewSessionFactoryProps,
     ) => PreviewSession | Promise<PreviewSession>;
     toolbar?: any; // Reactive right-aligned toolbar contribution
-    destinations?: { previewTab?: boolean; embed?: boolean };
-    preview?: any; // Svelte component
+    destinations?: { pageTab?: boolean; embed?: boolean };
     thumbnail?: any; // Svelte component
-    fullscreen?: any; // Component
     overridesDoubleClick?: boolean;
   }
 
-  type PreviewDestination = 'module' | 'tab' | 'gallery' | 'page' | 'embed';
+  type PreviewDestination = 'module' | 'gallery' | 'page' | 'embed';
 
   interface PreviewSession {
     editor?: unknown;
