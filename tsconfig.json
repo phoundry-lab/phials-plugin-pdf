@@ -13,7 +13,6 @@
     "rootDir": "./src",
     "types": ["svelte"]
   },
-  "include": ["src/**/*", "src/**/*.svelte"],
+  "include": ["src/**/*", "src/**/*.svelte", "sdk/**/*.d.ts"],
   "exclude": ["node_modules"]
 }
-

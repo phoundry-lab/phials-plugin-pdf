@@ -3,6 +3,7 @@
   "name": "PDF Preview",
   "version": "1.0.0",
   "minAppVersion": "0.1.0",
+  "pluginApiVersion": "1.0.0",
   "author": "Phials",
   "description": "Preview and thumbnail support for PDF files using pdf.js",
   "authorUrl": "https://github.com/EliWimmer",
@@ -10,4 +11,3 @@
   "icons": ["mdi:file-pdf-box"],
   "permissions": ["filesystem.read"]
 }
-

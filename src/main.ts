@@ -34,23 +34,24 @@ const pdfPreviewProvider: PreviewProvider = {
 /**
  * Main plugin export
  */
-const plugin: PhialsPlugin = {
-  id: 'phials.pdf',
-  name: 'PDF Preview',
-  version: '1.0.0',
-  icons: ['mdi:file-pdf-box'],
-  
-  onActivate(api: PluginAPI) {
-    setPluginAPI(api);
-    console.log('[PDF Plugin] Activated');
-  },
-  
-  onDeactivate() {
-    setPluginAPI(null);
-    console.log('[PDF Plugin] Deactivated');
-  },
-  
-  providers: [pdfPreviewProvider],
-};
+export default function createPlugin(): PhialsPlugin {
+  return {
+    id: 'phials.pdf',
+    name: 'PDF Preview',
+    version: '1.0.0',
 
-export default plugin;
+    onActivate(api: PluginAPI) {
+      setPluginAPI(api);
+      console.log('[PDF Plugin] Activated');
+    },
+
+    onDeactivate() {
+      setPluginAPI(null);
+      console.log('[PDF Plugin] Deactivated');
+    },
+
+    providers: [pdfPreviewProvider],
+  };
+}
+
+export { mount, unmount } from 'svelte';

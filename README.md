@@ -88,9 +88,11 @@ This produces:
    ```
 3. Restart Phials or reload plugins
 
-## Creating Your Own Plugin
+## Reference contract
 
-This repository serves as a template for creating Phials plugins. Key concepts:
+This repository is a focused preview-provider reference. Start new plugins from
+the official `phials-plugin-example` starter so SDK sync, validation, release
+inventory, and local installation stay aligned with the supported toolchain.
 
 ### 1. Plugin Structure
 
@@ -103,23 +105,21 @@ Every plugin needs:
 External plugins receive a `PluginAPI` object in `onActivate`:
 
 ```typescript
-const plugin: PhialsPlugin = {
-  id: 'your.plugin',
-  name: 'Your Plugin',
-  version: '1.0.0',
-  
-  onActivate(api: PluginAPI) {
-    // api.invoke() - Call Tauri commands
-    // api.settings - Access plugin settings
-    // api.modal - Show dialogs
-    // api.notify - Show notifications
-    // api.files - File path utilities
-  },
-  
-  providers: [/* ... */],
-};
+export default function createPlugin(): PhialsPlugin {
+  return {
+    id: 'your.plugin',
+    name: 'Your Plugin',
+    version: '1.0.0',
 
-export default plugin;
+    onActivate(api: PluginAPI) {
+      // Use typed APIs such as api.files, api.settings, and api.modal.
+    },
+
+    providers: [/* ... */],
+  };
+}
+
+export { mount, unmount } from 'svelte';
 ```
 
 ### 3. Providers
@@ -127,7 +127,7 @@ export default plugin;
 Plugins contribute functionality through providers:
 
 - **PreviewProvider** - Render file previews and thumbnails
-- **ContextProvider** - Add context menu items
+- **CommandProvider** - Add commands to context menus, toolbars, and the command bar
 - **MetadataProvider** - Extract file metadata
 - **ThemeProvider** - Add color themes
 
