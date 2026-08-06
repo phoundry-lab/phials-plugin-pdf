@@ -6,9 +6,12 @@
   interface Props {
     file: FileEntry;
     size: number;
+    onIntrinsicDimensions?: (
+      dimensions: ThumbnailIntrinsicDimensions,
+    ) => void;
   }
 
-  let { file, size = 128 }: Props = $props();
+  let { file, size = 128, onIntrinsicDimensions }: Props = $props();
 
   let canvas: HTMLCanvasElement;
   let pdf: PDFDocumentProxy | null = null;
@@ -22,7 +25,8 @@
         pdf.destroy();
       }
       pdf = await loadPDF(path);
-      await renderPageToCanvas(pdf, 1, canvas, size, size);
+      const dimensions = await renderPageToCanvas(pdf, 1, canvas, size, size);
+      onIntrinsicDimensions?.(dimensions);
     } catch (e) {
       error = true;
       // Draw placeholder
@@ -69,4 +73,3 @@
     background: #1a1a1a;
   }
 </style>
-

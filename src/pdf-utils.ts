@@ -56,7 +56,7 @@ export async function renderPageToCanvas(
   canvas: HTMLCanvasElement,
   maxWidth?: number,
   maxHeight?: number
-): Promise<void> {
+): Promise<{ width: number; height: number }> {
   const page = await pdf.getPage(pageNumber);
   const viewport = page.getViewport({ scale: 1 });
   
@@ -81,5 +81,6 @@ export async function renderPageToCanvas(
     canvasContext: ctx,
     viewport: scaledViewport,
   }).promise;
-}
 
+  return { width: viewport.width, height: viewport.height };
+}
